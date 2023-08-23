@@ -200,7 +200,6 @@ vi install-apache-pb.yml
         name: httpd
         state: started
 
-- name:play 2 starts
 # save the file using "ESCAPE + :wq!"
 
 # State as 'Present' and 'Installed' are used interchangeably. They both do the same thing i.e. It 
@@ -784,7 +783,7 @@ $ vi rolab.yml
 $ ansible-playbook rolab.yml
 
 #Verify if the file exists and has the right contents on either of the client machines(manage nodes)
-$ ansible  -a "cat /home/ec2-user/uptime"
+$ ansible all -a "cat /home/ec2-user/uptime"
 
 #now open the file and edit parameter as run_once: false 
 # Execute the playbook again
@@ -860,7 +859,7 @@ $ vi template.j2
 
 #Put the below content into the newly created template file
 
-Hello, {% if environment == 'prod' %}Production{% else %}Development{% endif %} environment!
+Hello, {% if Environment == 'prod' %}Production{% else %}Development{% endif %} environment!
 
 Here are the servers:
 {% for server in servers %}
@@ -881,7 +880,7 @@ $ vi implement-jinja2.yml
   hosts: all
   gather_facts: false
   vars:
-    environment: "prod"
+    Environment: "prod"
     servers:
       - name: Server 1
         ip: 172.31.13.48
