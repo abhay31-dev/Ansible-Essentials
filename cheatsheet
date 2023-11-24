@@ -120,7 +120,7 @@ ansible node1 -a "sudo ls -l /home/ansible-new/"
 
 
 # Add content into the file
-ansible node1 -b -m lineinfile -a 'dest=/home/ansible-new/demo.txt line="This server is managed by Ansible"
+ansible node1 -b -m lineinfile -a 'dest=/home/ansible-new/demo.txt line="This server is managed by Ansible"'
 
 
 # check if the lines are added in demo.txt
