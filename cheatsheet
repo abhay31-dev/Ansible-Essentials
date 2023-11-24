@@ -7,10 +7,10 @@ Login to AWS Console
 Lab 1: Installation and Configuration of Ansible
 ################################################
 
-# Launch an RHEL 9 machine in us-east-1. Choose t2.micro. In security group, 
+# Launch 3 RHEL 9 machine in us-east-1. Choose t2.micro. In security group, 
 # allow SSH (22) and HTTP (80) for all incoming traffic. Add Tag Name: Ansible-ControlNode
 
-# Once the EC2 is up & running, SSH into it and set the hostname as 'Control-Node'. 
+# Once the EC2 is up & running, SSH into one of it and set the hostname as 'Control-Node'. 
 sudo hostnamectl set-hostname Control-Node
 # Now you can exit and login again. It will show the new hostname.
 # or you can type 'bash' and open another shell which shows new hostname.
@@ -26,44 +26,32 @@ sudo pip3 install --upgrade pip
 
 # Install awscli, boto, boto3 and ansible
 # Boto/Boto3 are AWS SDK which will be needed while accessing AWS APIs
-sudo pip3 install awscli boto boto3 ansible==4.10.0
+sudo pip3 install awscli boto boto3
 sudo pip3 install ansible==4.10.0
 
 pip show ansible
 
-# Now configure aws cli to provide the credentials of the IAM user.
-aws configure
-Enter AKID (Access Key)
-Enter SAK (Secret Key)
-
-
-# If you need to create new credentials, Follow below steps
-Go to aws console. On top right corner, click on your name or aws profile id. 
-when the menu opens, click on Security Credentials
-Under AWS IAM Credntials, click on Create access key. If you already have 2 active keys, 
-you can deactivate and delete the older one so that you can create a new key
-
-# Do the below smoke test to check if the configuration has worked. For the below commanbd, you should
-# get a list of your s3 buckets. If you don't have any buckets the command won't output anything.
-# You are ok, as long as it does not give any error.
-aws s3 ls
-
+Load the key-pair tha
 # Install wget so that we can download playbooks from the training material repository 
 sudo yum install wget -y
 
-# download the playbook for creating 2 EC2 nodes as managed hosts for ansible setup
-wget https://hpe-devops-training.s3.amazonaws.com/ec2-playbook.yml
+Upload the private key using MobaXterm in /home/ec2-user/.ssh 
+sudo mv <your-private-key-name> id_rsa
+    e.g. sudo mv ansible-ctjp-batch12.pem id_rsa
+chmod 600 id_rsa
 
-ansible-playbook ec2-playbook.yml
 
 # Once you get the ip addresses, do the following:
+sudo mkdir /etc/ansible
 sudo vi /etc/ansible/hosts
 
 # Add the prive IP addresses, by pressing "INSERT" 
-< Add Managed Node 1 Private IP >
-< Add Managed Node 2 Private IP >
-172.31.80.253
-172.31.90.114
+node1 ansible_ssh_host=node1-private-ip ansible_ssh_user=ec2-user
+node2 ansible_ssh_host=node2-private-ip ansible_ssh_user=ec2-user
+
+e.g. node1 ansible_ssh_host=172.31.14.113 ansible_ssh_user=ec2-user
+     node2 ansible_ssh_host=172.31.2.229 ansible_ssh_user=ec2-user
+
 
 # Save the file using "ESCAPE + :wq!"
 
@@ -109,54 +97,51 @@ ansible all -a "free -h"
 ansible all -m user -a "name=ansible-new" --become
 
 # lists all users in the machine. Check if ansible-new is present in the managed nodes / localhost
-ansible <node ip> -a "cat /etc/passwd"
+ansible node1 -a "cat /etc/passwd"
 
 # List all directories in /home. Ensure that directory 'ansible-new' is present in /home. 
-ansible <node ip> -a "ls /home"
+ansible node2 -a "ls /home"
 
 
 # Change the permission mode from '700' to '755' for the new home directory created for ansible-new
-ansible < Replace Node 1 IP > -m file -a "dest=/home/ansible-new mode=755" --become
-Ex: ansible 172.31.22.228  -m file -a "dest=/home/ansible-new/ mode=755" --become
+ansible node1 -m file -a "dest=/home/ansible-new mode=755" --become
+
 
 # Check if the permissions got changed
-ansible 172.31.22.228 -a "sudo ls -l /home"
+ansible node1 -a "sudo ls -l /home"
 
 
 # Create a new file in the new dir in node 1
-ansible <Node 1 IP> -m file -a "dest=/home/ansible-new/demo.txt mode=600 state=touch" --become
-Ex: ansible 172.31.24.133 -m file -a "dest=/home/ansible-new/demo.txt mode=600 state=touch" --become
+ansible node1 -m file -a "dest=/home/ansible-new/demo.txt mode=600 state=touch" --become
+
 
 # Check if the permissions got changed
-ansible 172.31.31.133 -a "sudo ls -l /home/ansible-new/"
+ansible node1 -a "sudo ls -l /home/ansible-new/"
 
 
 # Add content into the file
-ansible <Node 1 IP> -b -m lineinfile -a 'dest=/home/ansible-new/demo.txt line="This server is managed by Ansible"'
-Ex: ansible 172.31.24.133 -b -m lineinfile -a 'dest=/home/ansible-new/demo.txt line="This server is managed by Ansible"'
+ansible node1 -b -m lineinfile -a 'dest=/home/ansible-new/demo.txt line="This server is managed by Ansible"
 
 
 # check if the lines are added in demo.txt
-ansible 172.31.40.80  -a "sudo cat /home/ansible-new/demo.txt"
+ansible node1 -a "sudo cat /home/ansible-new/demo.txt"
 
 
 # You can remove the line using parameter state=absent
-ansible 172.31.24.133 -b -m lineinfile -a 'dest=/home/ansible-new/demo.txt line="This server is managed by Ansible" state=absent'
+ansible node1 -b -m lineinfile -a 'dest=/home/ansible-new/demo.txt line="This server is managed by Ansible" state=absent'
 
 # check if the lines are removed from demo.txt
-ansible 172.31.31.133 -b -a "sudo cat /home/ansible-new/demo.txt"
+ansible node1 -b -a "sudo cat /home/ansible-new/demo.txt"
 
 # Now copy a file from ansible-control node to host node 1
 touch test.txt
 echo "This file will be copied to managed node using copy module" >> test.txt
 
-ansible <Node 1 IP> -m copy -a "src=test.txt dest=/home/ansible-new/test" -b
-Ex: ansible 172.31.24.133 -m copy -a "src=test.txt dest=/home/ansible-new/test" -b
+ansible node1 -m copy -a "src=test.txt dest=/home/ansible-new/test" -b
 # --become can be replaced by -b
 
 # check if the file got copied to managed node.
-ansible 172.31.31.133 -b -a "sudo ls -l /home/ansible-new/test"
-
+ansible node1 -b -a "sudo ls -l /home/ansible-new/test"
 
 sudo vi /etc/ansible/hosts
 
