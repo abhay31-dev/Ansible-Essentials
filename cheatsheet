@@ -95,6 +95,10 @@ sudo pip3 install awscli boto boto3
 sudo pip3 install ansible==4.10.0
 
 pip show ansible
+#Authorize aws credentials
+aws configure
+Enter the access key 
+Enter the secret key
 
 Load the key-pair tha
 # Install wget so that we can download playbooks from the training material repository 
