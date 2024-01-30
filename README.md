@@ -358,7 +358,7 @@ ansible-playbook putfile.yml
 ```
 Now modify the playbook to add another child directory and a file inside cloudthat's home directory
 ```
-vi putfile1.yml
+vi putfile.yml
 ```
 Add the given content, by pressing "INSERT" 
 ```
