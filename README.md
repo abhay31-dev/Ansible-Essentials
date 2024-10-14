@@ -1180,4 +1180,5 @@ anible all -a "java -version"
 2. Convert pem to ppk: https://www.youtube.com/watch?v=6OzOxjFSc90
 3. DevOps skills: https://youtube.com/shorts/4sJ_1vDdeS0?si=6mjtDStfeyo688-9
 4. Basic networking: https://www.youtube.com/watch?v=_IOZ8_cPgu8
-
+5. DevOps basics: https://youtube.com/playlist?list=PLy9YqdkGQ_pkrmQudUcOmroaY4txr7UP7&si=5kuN324pr8jsv4T2
+6. Cloud basics: https://youtube.com/playlist?list=PLy9YqdkGQ_plZcJl_u4S-dxB6_72kpsuS&si=pvGXPt0f37pK_NGY
