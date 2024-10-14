@@ -1176,7 +1176,8 @@ anible all -a "java -version"
 ```
 ***********************************************************************************************************************************
 ## Extra links and references
-1. https://www.c-sharpcorner.com/article/difference-between-pem-and-ppk/
-2. https://www.youtube.com/watch?v=6OzOxjFSc90
-3. 
+1. Difference between ppk and pem: https://www.c-sharpcorner.com/article/difference-between-pem-and-ppk/
+2. Convert pem to ppk: https://www.youtube.com/watch?v=6OzOxjFSc90
+3. DevOps skills: https://youtube.com/shorts/4sJ_1vDdeS0?si=6mjtDStfeyo688-9
+4. Basic networking: https://www.youtube.com/watch?v=_IOZ8_cPgu8
 
