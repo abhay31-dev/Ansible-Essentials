@@ -1172,9 +1172,11 @@ ansible-playbook implement-java.yml
 ```
 Now, check if java is installed in managed nodes.
 ```
-ansible all -a "java -version"
+anible all -a "java -version"
 ```
 ***********************************************************************************************************************************
-
- 
+## Extra links and references
+1. https://www.c-sharpcorner.com/article/difference-between-pem-and-ppk/
+2. https://www.youtube.com/watch?v=6OzOxjFSc90
+3. 
 
