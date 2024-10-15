@@ -765,6 +765,9 @@ ansible-playbook -t "create_dir" tagslabs.yml
 ```
 ansible-playbook -t "create_file" tagslabs.yml
 ```
+```
+ansible-playbook --skip-tags "install_curl" tagslabs.yml
+```
 -----------------------------------------------------------------------------------
 ### Task 3: Prompts with Ansible Playbooks
 
