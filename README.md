@@ -729,32 +729,41 @@ vi tagslabs.yml
 ---
 - hosts: all
   become: yes
-  user: ec2-user
-  connection: ssh
-  gather_facts: no
   tasks:
-    - name: Install telnet
-      yum: pkg=telnet state=latest
+    - name: Create a directory
+      file:
+        path: /tmp/demo_dir
+        state: directory
+        mode: '0755'
       tags:
-        - packages
-    - name: Verifying telnet installation
-      raw: yum list installed | grep telnet > /home/ec2-user/pkg.log
+        - create_dir
+
+    - name: Create a file
+      copy:
+        content: "This is a demo file"
+        dest: /tmp/demo_dir/demo_file.txt
       tags:
-        - logging
+        - create_file
+
+    - name: Ensure a package is installed (curl)
+      yum:
+        name: curl
+        state: present
+      tags:
+        - install_curl
+
 ```
 
 **save the file using** `ESCAPE + :wq!`
 
 Execute the playbook
+
+Notice that only the tasks associated with the mentioned tags are running
 ```
-ansible-playbook tagslabs.yml
-```
-Run the playbook again, this time using tags. Notice that only the tasks associated with the mentioned tags are running
-```
-ansible-playbook -t "logging" tagslabs.yml
+ansible-playbook -t "create_dir" tagslabs.yml
 ```
 ```
-ansible-playbook -t "packages" tagslabs.yml
+ansible-playbook -t "create_file" tagslabs.yml
 ```
 -----------------------------------------------------------------------------------
 ### Task 3: Prompts with Ansible Playbooks
@@ -772,7 +781,7 @@ vi promptlab.yml
   vars_prompt:
     - name: pkginstall
       prompt: Which package do you want to install?
-      default: telnet
+      default: vim
       private: no
   tasks:
     - name: Install the package specified
@@ -782,7 +791,7 @@ vi promptlab.yml
 **save the file using** `ESCAPE + :wq!`
 
 Execute the playbook & you will be prompt for enter the package name which you want to install
-If no package is mentioned, telnet is installed by default
+If no package is mentioned, vim is installed by default
 ```
 ansible-playbook promptlab.yml
 ```
