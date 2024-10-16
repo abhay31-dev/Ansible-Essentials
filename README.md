@@ -1144,7 +1144,7 @@ Add the given content, by pressing "INSERT".
 
 Execute the playbook
 ```
-ansible-playbook implement_roles.yml
+ansible-playbook implement-roles.yml
 ```
 Check the home page on browser. (Public DNS)
 It will show the webpage with msg "We are performing the Roles Lab"
