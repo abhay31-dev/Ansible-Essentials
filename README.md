@@ -1124,7 +1124,7 @@ tree
 
 Now change the directory to ansible directory and create the playbook as implement-roles.yml
 ```
-cd /home/ec2-user-ansible-labs
+cd /home/ec2-user/ansible-labs/role-labs/
 ```
 ```
 vi implement-roles.yml
