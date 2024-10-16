@@ -1031,7 +1031,10 @@ mkdir role-labs && cd role-labs
 
 Now inside the roles directory, create two different directories for different roles, namely webrole and dbrole. Then switch to the directory dbrole and then create tasks directory inside dbrole
 ```
-mkdir webrole dbrole && cd dbrole
+mkdir webrole dbrole
+```
+```
+cd dbrole
 ```
 ```
 mkdir tasks
@@ -1121,7 +1124,7 @@ tree
 
 Now change the directory to ansible directory and create the playbook as implement-roles.yml
 ```
-cd ..
+cd /home/ec2-user-ansible-labs
 ```
 ```
 vi implement-roles.yml
@@ -1157,7 +1160,7 @@ ansible-galaxy install geerlingguy.java
 ```
 Now change into labs directory by running below command and create YAML file
 ```
-cd /home/ec2-user/labs/
+cd /home/ec2-user/ansible-labs/
 ```
 ```
 vi implement-java.yml
