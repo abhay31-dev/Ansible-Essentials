@@ -60,7 +60,7 @@ sudo yum install wget -y
 
 Download the script using wget
 ```
-wget https://ansible-script.s3.us-west-1.amazonaws.com/ansible_script.yaml
+wget https://devops-code-sruti.s3.us-east-1.amazonaws.com/ansible_script.yaml
 ```
 
 Execute the script
